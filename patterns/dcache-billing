@@ -1,0 +1,33 @@
+
+BILLING_TIME %{MONTHNUM}.%{MONTHDAY} %{TIME}
+
+CELL \[pool:%{DATA:pool_name}:transfer\]
+
+PNFSID_NEW (?:[A-F0-9]{36})
+PNFSID_OLD (?:[A-F0-9]{24})
+PNFSID %{PNFSID_OLD}|%{PNFSID_NEW}
+
+PNFSID_SIZE \[%{PNFSID:pnfsid},%{NONNEGINT:size}\]
+
+DOOR \[door:%{DATA:door}\]
+PATH \[%{UNIXPATH:file_path}\]
+
+UID UidPrincipal\[%{NONNEGINT:uid}\]
+GID GidPrincipal\[%{NONNEGINT:gid},primary\]
+GIDS GidPrincipal\[%{NONNEGINT:gids}\]
+
+
+SUBJECTS \[\[%{UID}, %{GID}, %{GIDS}\]\]
+
+SUNIT (?<sunit>%{DATA}:%{DATA}@%{DATA})
+
+TRANSFER_SIZE %{NONNEGINT:transfer_size}
+TRANSFER_TIME %{NONNEGINT:transfer_time}
+
+IS_WRITE  %{DATA:is_write}
+
+PROTOCOL \{%{DATA:proto},%{IPORHOST:remote_host}:%{POSINT:remote_port}\}
+ERROR \{%{NONNEGINT:error_code}:\"%{DATA:error_msg}\"\}
+
+
+TRANSFER %{BILLING_TIME:billing_time} %{CELL} %{PNFSID_SIZE} %{DOOR} %{PATH}  %{SUBJECTS} %{SUNIT} %{TRANSFER_SIZE} %{TRANSFER_TIME} %{IS_WRITE} %{PROTOCOL} %{ERROR}
