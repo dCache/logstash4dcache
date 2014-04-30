@@ -27,7 +27,7 @@ TRANSFER_TIME %{NONNEGINT:transfer_time}
 
 IS_WRITE  %{DATA:is_write}
 
-PROTOCOL \{%{DATA:proto}([,\s])%{IPORHOST:remote_host}([:\s])%{POSINT:remote_port}\}
+PROTOCOL \{%{DATA:proto}([,:\s])(%{IPORHOST:remote_host})(/%{IPORHOST:remote_ip})?([:\s])%{POSINT:remote_port}\}
 ERROR \{%{NONNEGINT:error_code}:\"%{DATA:error_msg}\"\}
 
 
