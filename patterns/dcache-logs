@@ -1,0 +1,1 @@
+DCACHE_CELL_LOG %{MONTHDAY} %{MONTH} %{YEAR} %{TIME} \(%{DATA:cell}\) \[%{DATA:ndc}\] %{DATA:log_message}
