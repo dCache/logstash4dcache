@@ -10,7 +10,8 @@ PNFSID %{PNFSID_OLD}|%{PNFSID_NEW}
 PNFSID_SIZE \[%{PNFSID:pnfsid},%{NONNEGINT:size:int}\]
 
 DOOR \[door:%{DATA:door}\]
-PATH \[%{UNIXPATH:file_path}\]
+FILE_PATH_OR_UNKNOWN %{UNIXPATH}|Unknown
+PATH \[%{FILE_PATH_OR_UNKNOWN:file_path}\]
 
 UID UidPrincipal\[%{NONNEGINT:uid}\]
 GID GidPrincipal\[%{NONNEGINT:gid},primary\]
