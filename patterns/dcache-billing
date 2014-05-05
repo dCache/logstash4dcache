@@ -9,7 +9,7 @@ PNFSID %{PNFSID_OLD}|%{PNFSID_NEW}
 
 PNFSID_SIZE \[%{PNFSID:pnfsid},%{NONNEGINT:size:int}\]
 
-DOOR \[door:%{DATA:door}\]
+DOOR \[(?<initiator_type>door|pool):%{DATA:initiator}\]
 FILE_PATH_OR_UNKNOWN %{UNIXPATH}|Unknown
 PATH \[%{FILE_PATH_OR_UNKNOWN:file_path}\]
 
@@ -28,7 +28,8 @@ TRANSFER_TIME %{NONNEGINT:transfer_time:int}
 
 IS_WRITE  %{DATA:is_write}
 
-PROTOCOL \{%{DATA:proto}([,:\s])(%{IPORHOST:remote_host})(/%{IP:remote_ip})?([:\s])(%{POSINT:remote_port:int})\}
+HTTP_PAYLOAD (:%{DATA})
+PROTOCOL \{%{DATA:proto}([,:\s])(%{IPORHOST:remote_host})(/%{IP:remote_ip})?([:\s])(%{POSINT:remote_port:int})(%{HTTP_PAYLOAD})?\}
 ERROR \{%{NONNEGINT:error_code:int}:\"%{DATA:error_msg}\"\}
 
 
