@@ -28,8 +28,10 @@ TRANSFER_TIME %{NONNEGINT:transfer_time:int}
 
 IS_WRITE  %{DATA:is_write}
 
-HTTP_PAYLOAD (:%{DATA})
-PROTOCOL \{%{DATA:proto}([,:\s])(%{IPORHOST:remote_host})(/%{IP:remote_ip})?([:\s])(%{POSINT:remote_port:int})(%{HTTP_PAYLOAD})?\}
+PROTO_PAYLOAD (:%{DATA})
+PROTO (?:%{DATA}-[0-9]\.[0-9])
+
+PROTOCOL \{%{PROTO:proto}([:\s])(%{IPORHOST:remote_host})(/%{IP:remote_ip})?([:\s])(%{POSINT:remote_port:int})(%{PROTO_PAYLOAD})?\}
 ERROR \{%{NONNEGINT:error_code:int}:\"%{DATA:error_msg}\"\}
 
 
