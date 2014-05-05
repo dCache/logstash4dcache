@@ -1,7 +1,9 @@
 
 BILLING_TIME %{MONTHNUM}.%{MONTHDAY} %{TIME}
 
-CELL \[pool:%{DATA:pool_name}:transfer\]
+TRANSFER_CELL \[pool:%{DATA:pool_name}:transfer\]
+STORE_CELL \[pool:%{DATA:pool_name}:store\]
+RESTORE_CELL \[pool:%{DATA:pool_name}:restore\]
 
 PNFSID_NEW (?:[A-F0-9]{36})
 PNFSID_OLD (?:[A-F0-9]{24})
@@ -25,6 +27,7 @@ SUNIT (?<sunit>%{DATA}:%{DATA}@%{DATA})
 
 TRANSFER_SIZE %{NONNEGINT:transfer_size:int}
 TRANSFER_TIME %{NONNEGINT:transfer_time:int}
+QUEUE_TIME %{NONNEGINT:queue_time:int}
 
 IS_WRITE  %{DATA:is_write}
 
@@ -35,7 +38,11 @@ PROTOCOL \{%{PROTO:proto}([:\s])(%{IPORHOST:remote_host})(/%{IP:remote_ip})?([:\
 ERROR \{%{NONNEGINT:error_code:int}:\"%{DATA:error_msg}\"\}
 
 
-TRANSFER %{BILLING_TIME:billing_time} %{CELL} %{PNFSID_SIZE} %{DOOR} %{PATH}  %{SUBJECTS} %{SUNIT} %{TRANSFER_SIZE} %{TRANSFER_TIME} %{IS_WRITE} %{PROTOCOL} %{ERROR}
+TRANSFER %{BILLING_TIME:billing_time} %{TRANSFER_CELL} %{PNFSID_SIZE} %{DOOR} %{PATH}  %{SUBJECTS} %{SUNIT} %{TRANSFER_SIZE} %{TRANSFER_TIME} %{IS_WRITE} %{PROTOCOL} %{ERROR}
 
 
-TRANSFER_CLASSIC %{BILLING_TIME:billing_time} %{CELL} %{PNFSID_SIZE} %{PATH} %{SUNIT} %{TRANSFER_SIZE} %{TRANSFER_TIME} %{IS_WRITE} %{PROTOCOL} %{DOOR} %{ERROR}
+TRANSFER_CLASSIC %{BILLING_TIME:billing_time} %{TRANSFER_CELL} %{PNFSID_SIZE} %{PATH} %{SUNIT} %{TRANSFER_SIZE} %{TRANSFER_TIME} %{IS_WRITE} %{PROTOCOL} %{DOOR} %{ERROR}
+
+STORE_CLASSIC %{BILLING_TIME:billing_time} %{STORE_CELL} %{PNFSID_SIZE} %{PATH} %{SUNIT} %{TRANSFER_TIME} %{QUEUE_TIME} %{ERROR}
+
+RESTORE_CLASSIC %{BILLING_TIME:billing_time} %{RESTORE_CELL} %{PNFSID_SIZE} %{PATH} %{SUNIT} %{TRANSFER_TIME} %{QUEUE_TIME} %{ERROR}
