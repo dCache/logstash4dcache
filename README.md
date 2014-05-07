@@ -117,6 +117,13 @@ bind <your-ip-here>
 ```
 Notice, that bind ip **MUST** match one used in logstash config file in *elasticsearch* section.
 
+
+Tweak elasticsearch ***for single node*** performance. Update ***/etc/elasticsearch/elasticsearch.yml***
+
+```
+index.number_of_shards: 1
+index.number_of_replicas: 0
+```
 ###Ready to go!
 
 On monitoring host:
