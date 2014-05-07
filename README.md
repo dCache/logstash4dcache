@@ -27,7 +27,7 @@ enabled=1
 ```
 ###Configure logstash
 Create a file ***/etc/logstash.d/dcache-billing.conf:***
-```
+```json
 input {
   file {
     path => "/var/lib/dcache/billing/2014/05/billing-2014.*"
@@ -68,7 +68,7 @@ output {
 ```
 
 ###Add parser for dCache's billing files
-```
+```sh
 # wget -O /etc/logstash.d/patterns/dcache-billing  https://raw.githubusercontent.com/kofemann/logstash4dcache/master/patterns/dcache-billing
 ```
 ##On the node which will run as monitoring system
@@ -82,12 +82,12 @@ gpgkey=http://packages.elasticsearch.org/GPG-KEY-elasticsearch
 enabled=1
 ```
 
-```
+```sh
 # yum install yum-conf-epel-6-1.1 httpd elasticsearch redis
 ```
 
 Download and configure Kibana
-```
+```sh
 # wget https://download.elasticsearch.org/kibana/kibana/kibana-3.0.1.tar.gz
 # tar -xvzf kibana-3.0.1.tar.gz
 # mv kibana-3.0.1 /var/www/htdocs/kibana3
@@ -127,16 +127,73 @@ index.number_of_replicas: 0
 ###Ready to go!
 
 On monitoring host:
-```
+```sh
 # service redis start
 # service elasticsearch start
 # service httpd start
 ```
 
 We need to update tamplate for newly crated indexes (databases)
-```
+```sh
 # curl -XPUT 'http://localhost:9200/_template/billing' -d '
-{"order":0,"template":"dcache-billing-*","settings":{"index.refresh_interval":"5s"},"mappings":{"_default_":{"dynamic_templates":[{"string_fields":{"mapping":{"index":"analyzed","omit_norms":true,"type":"string","fields":{"raw":{"index":"not_analyzed","ignore_above":256,"type":"string"}}},"match_mapping_type":"string","match":"*"}}],"properties":{"geoip":{"dynamic":true,"path":"full","properties":{"location":{"type":"geo_point"}},"type":"object"},"@version":{"index":"not_analyzed","type":"string"},"pool_name.raw":{"index":"not_analyzed","type":"string"},"sunit.raw":{"index":"not_analyzed","type":"string"}},"_all":{"enabled":true}}}}
+{
+  "order":0,
+  "template":"dcache-billing-*",
+  "settings":{
+    "index.refresh_interval":"5s"
+  },
+  "mappings":{
+    "_default_":{
+      "dynamic_templates":[
+        {
+          "string_fields":{
+            "mapping":{
+              "index":"analyzed",
+              "omit_norms":true,
+              "type":"string",
+              "fields":{
+                "raw":{
+                  "index":"not_analyzed",
+                  "ignore_above":256,
+                  "type":"string"
+                }
+              }
+            },
+            "match_mapping_type":"string",
+            "match":"*"
+          }
+        }
+      ],
+      "properties":{
+        "geoip":{
+          "dynamic":true,
+          "path":"full",
+          "properties":{
+            "location":{
+              "type":"geo_point"
+            }
+          },
+          "type":"object"
+        },
+        "@version":{
+          "index":"not_analyzed",
+          "type":"string"
+        },
+        "pool_name.raw":{
+          "index":"not_analyzed",
+          "type":"string"
+        },
+        "sunit.raw":{
+          "index":"not_analyzed",
+          "type":"string"
+        }
+      },
+      "_all":{
+        "enabled":true
+      }
+    }
+  }
+}
 '
 ```
 
