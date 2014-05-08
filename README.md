@@ -211,7 +211,7 @@ Creating a dashboard
 ====================
 
 Point your browser to (http://your-monitoring-host/kibana/index.html#/dashboard/file/default.json)
-In the right upper corner, you can see the load icon ( in for of a folder ). Click on it -> Advanced -> Gist and paste this url [dCache-billing-demo](https://gist.github.com/anonymous/1a054d374b1710bb9d9a)
+In the right upper corner, you can see the load icon ( in for of a folder ). Click on it -> Advanced -> Gist and paste this url [dCache-billing-demo](https://gist.github.com/kofemann/d9d0a9c489ccd3f79563)
 
 You should get the same dashboard shown above.
 
