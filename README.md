@@ -83,7 +83,7 @@ enabled=1
 ```
 
 ```
-# yum install yum-conf-epel-6-1.1 httpd elasticsearch redis
+# yum install yum-conf-epel httpd elasticsearch redis
 ```
 
 Download and configure Kibana
