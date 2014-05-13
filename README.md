@@ -90,7 +90,7 @@ Download and configure Kibana
 ```
 # wget https://download.elasticsearch.org/kibana/kibana/kibana-3.0.1.tar.gz
 # tar -xvzf kibana-3.0.1.tar.gz
-# mv kibana-3.0.1 /var/www/htdocs/kibana3
+# mv kibana-3.0.1 /var/www/html/kibana3
 ```
 
 In the file ***/var/www/htdocs/kibana3/config.js*** update line with 'elasticsearch:' (line 32?):
@@ -102,7 +102,7 @@ Add apache config file to access kibana ***/etc/httpd/conf.d/kibana.conf***:
 ```
   ProxyPass /elasticsearch http://localhost:9200
   ProxyPassReverse /elasticsearch http://localhost:9200
-  Alias /kibana /var/www/htdocs/kibana3
+  Alias /kibana /var/www/html/kibana3
 
   <Location /kibana>
     Order deny,allow
