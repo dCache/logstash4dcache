@@ -117,6 +117,11 @@ bind <your-ip-here>
 ```
 Notice, that bind ip **MUST** match one used in logstash config file in *elasticsearch* section.
 
+Update ***/etc/sysconfig/elasticsearch*** to adjust memory available for elasticsearch. Do not use more then 1/2 of total memory.
+```
+ES_HEAP_SIZE=4g
+```
+
 
 Tweak elasticsearch ***for single node*** performance. Update ***/etc/elasticsearch/elasticsearch.yml***
 
