@@ -31,13 +31,14 @@ Create a file ***/etc/logstash/dcache-billing.conf:***
 input {
   file {
     path => "/var/lib/dcache/billing/2014/05/billing-2014.*"
+    sincedb_path => "/var/tmp/sincedb-dcache"
     type => "dcache-billing"
   }
 }
 
 filter {
   grok {
-    patterns_dir => "/etc/logstash.d/patterns"
+    patterns_dir => "/etc/logstash/patterns"
     match => [ "message", "%{TRANSFER_CLASSIC}" ]
     match => [ "message", "%{STORE_CLASSIC}" ]
     match => [ "message", "%{RESTORE_CLASSIC}" ]
