@@ -23,7 +23,7 @@ enabled=1
 ```
 
 ```
-# yum install logstash
+# yum install logstash logstash-contrib
 ```
 ###Configure logstash
 Create a file ***/etc/logstash/dcache-billing.conf:***
