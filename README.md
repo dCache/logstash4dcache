@@ -93,7 +93,7 @@ Download and configure Kibana
 # mv kibana-3.0.1 /var/www/html/kibana3
 ```
 
-In the file ***/var/www/htdocs/kibana3/config.js*** update line with 'elasticsearch:' (line 32?):
+In the file ***/var/www/html/kibana3/config.js*** update line with 'elasticsearch:' (line 32?):
 ```
    elasticsearch: "http://<your-host-name>:9200",
 ```
