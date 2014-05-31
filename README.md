@@ -30,8 +30,10 @@ Create a file ***/etc/logstash/conf.d/dcache-billing.conf:***
 ```
 input {
   file {
-    path => "/var/lib/dcache/billing/**/billing-2014.*"
+    path => "/var/lib/dcache/billing/**/billing-20*"
     sincedb_path => "/var/tmp/sincedb-dcache"
+    # uncomment next line if you want to import existing data
+    # start_position => beginning
     type => "dcache-billing"
   }
 }
