@@ -39,14 +39,38 @@ input {
 }
 
 filter {
-  grok {
-    patterns_dir => "/etc/logstash/patterns"
-    match => [ "message", "%{TRANSFER_CLASSIC}" ]
-    match => [ "message", "%{STORE_CLASSIC}" ]
-    match => [ "message", "%{RESTORE_CLASSIC}" ]
-    named_captures_only => true
-    remove_field => [ "message" ]
-  }
+
+  if "RemoveFiles=" in [message] {
+  # Because RemoveFiles= is the only(source needed) non-conforming event.
+    grok {
+      patterns_dir => "/etc/logstash/patterns"
+      match => [ "message", "%{REMOVE_ON_POOL}" ]
+      named_captures_only => true
+      tag_on_failure => [ "_parse_dcache_failure10" ]
+    } # End of grok
+    mutate {
+      split => [ "pnfsids", "," ]
+      add_tag => [ "dcache_billing_removed" ]
+    } # End of Mutate to make a real list of the entries in pnfsids
+
+  } else {
+
+    grok {
+      patterns_dir => "/etc/logstash/patterns"
+      match => [ "message", "%{TRANSFER_CLASSIC}" ]
+      match => [ "message", "%{STORE_CLASSIC}" ]
+      match => [ "message", "%{RESTORE_CLASSIC}" ]
+      match => [ "message", "%{REQUEST_CLASSIC}" ]
+      match => [ "message", "%{REQUEST_DCAP}" ]
+      match => [ "message", "%{REMOVE_CLASSIC}" ]
+      match => [ "message", "%{REMOVE_SRM}" ]
+      named_captures_only => true
+      remove_field => [ "message" ]
+      tag_on_failure => [ "_parse_dcache_failure00" ]
+    }
+
+  } End of if else
+
 
   date {
     match => [ "billing_time", "MM.dd HH:mm:ss" ]
