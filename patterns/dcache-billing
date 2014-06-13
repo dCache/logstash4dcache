@@ -1,8 +1,8 @@
-
 BILLING_TIME %{MONTHNUM}.%{MONTHDAY} %{TIME}
 
-BILL_TYPE (?:transfer|restore|store)
+BILL_TYPE (?:transfer|restore|store|request|remove)
 CELL_AND_TYPE \[pool:%{DATA:pool_name}:%{BILL_TYPE:bill_type}\]
+CELL_AND_DOMAIN_AND_TYPE \[(door:%{DATA:cell_name}|pool:%{DATA:pool_name})@%{DATA:domain_name}:%{BILL_TYPE:bill_type}\]
 
 PNFSID_NEW (?:[A-F0-9]{36})
 PNFSID_OLD (?:[A-F0-9]{24})
@@ -10,7 +10,7 @@ PNFSID %{PNFSID_OLD}|%{PNFSID_NEW}
 
 PNFSID_SIZE \[%{PNFSID:pnfsid},%{NONNEGINT:size:int}\]
 PNFSID_TSIZE \[%{PNFSID:pnfsid},%{NONNEGINT:transfer_size:int}\]
-
+PNFSID_TSIZE_OR_ZERO (\[,0\]|%{PNFSID_TSIZE})
 
 DOOR \[(?<initiator_type>door|pool):%{DATA:initiator}\]
 FILE_PATH_OR_UNKNOWN %{UNIXPATH}|Unknown
@@ -23,8 +23,10 @@ GIDS GidPrincipal\[%{NONNEGINT:gids}\]
 
 SUBJECTS \[\[%{UID}, %{GID}, %{GIDS}\]\]
 DN \[%{DATA:dn}\]
+REQUESTDN \["%{DATA:dn}":%{NONNEGINT:uid}:%{NONNEGINT:gid}:(%{IP:remote_host}|unknown)\]
 
 SUNIT (?<sunit>%{DATA}:%{DATA}@%{DATA})
+UNKNOWN_OR_SUNIT_OR_NOTHING (<Unknown>|%{SUNIT}|)
 
 TRANSFER_SIZE %{NONNEGINT:transfer_size:int}
 TRANSFER_TIME %{NONNEGINT:transfer_time:int}
@@ -47,3 +49,10 @@ TRANSFER_CLASSIC %{BILLING_TIME:billing_time} %{CELL_AND_TYPE} %{PNFSID_SIZE} %{
 STORE_CLASSIC %{BILLING_TIME:billing_time} %{CELL_AND_TYPE} %{PNFSID_TSIZE} %{PATH} %{SUNIT} %{TRANSFER_TIME} %{QUEUE_TIME} %{ERROR}
 
 RESTORE_CLASSIC %{BILLING_TIME:billing_time} %{CELL_AND_TYPE} %{PNFSID_TSIZE} %{PATH} %{SUNIT} %{TRANSFER_TIME} %{QUEUE_TIME} %{ERROR}
+
+REQUEST_CLASSIC %{BILLING_TIME:billing_time} %{CELL_AND_DOMAIN_AND_TYPE} %{REQUESTDN} %{PNFSID_TSIZE_OR_ZERO} %{PATH} %{UNKNOWN_OR_SUNIT_OR_NOTHING} %{TRANSFER_TIME} %{QUEUE_TIME} %{ERROR}
+REQUEST_DCAP %{BILLING_TIME:billing_time} %{CELL_AND_DOMAIN_AND_TYPE} (\[%{DATA:dcap}\]|) %{PNFSID_TSIZE} %{PATH} (<Unknown>|) %{TRANSFER_TIME} %{QUEUE_TIME} %{ERROR}
+
+REMOVE_ON_POOL %{BILLING_TIME:billing_time} Pool=%{DATA:cell_name};RemoveFiles=,%{GREEDYDATA:pnfsids}
+REMOVE_CLASSIC %{BILLING_TIME:billing_time} %{CELL_AND_DOMAIN_AND_TYPE} %{PNFSID_SIZE} %{PATH} %{SUNIT} %{ERROR}
+REMOVE_SRM %{BILLING_TIME:billing_time} %{CELL_AND_DOMAIN_AND_TYPE} %{REQUESTDN} %{PNFSID_TSIZE} %{PATH} <Unknown> 0 0 %{ERROR}
