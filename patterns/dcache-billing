@@ -34,10 +34,10 @@ QUEUE_TIME %{NONNEGINT:queue_time:int}
 
 IS_WRITE  %{DATA:is_write}
 
-PROTO_PAYLOAD (:%{DATA})
+PROTO_PAYLOAD (?:%{DATA})
 PROTO (?:%{DATA}-[0-9]\.[0-9])
 
-PROTOCOL \{%{PROTO:proto}([:,\s])(%{IPORHOST:remote_host})(/%{IP:remote_ip})?([:\s])(%{POSINT:remote_port:int})(%{PROTO_PAYLOAD})?\}
+PROTOCOL \{%{PROTO:proto}([:,\s])(%{IPORHOST:remote_host})(/%{IP:remote_ip})?([:\s])(%{NONNEGINT:remote_port:int})(%{PROTO_PAYLOAD:payload})?\}
 ERROR \{%{NONNEGINT:error_code:int}:\"%{DATA:error_msg}\"\}
 
 
