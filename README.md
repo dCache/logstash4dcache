@@ -90,6 +90,7 @@ output {
     host => "monitoring-host-name"
     index => "dcache-billing-%{+YYYY.MM.dd}"
     template_name => "billing"
+    protocol => "http"
   }
 }
 ```
