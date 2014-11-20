@@ -1,0 +1,16 @@
+ACCESSGFTP1 level=%{WORD:level} ts=%{TIMESTAMP_ISO8601:access_time} event=%{DATA:event} host.remote=\/%{IP:IP}\:%{INT:port} session=%{WORD:celltype}\:%{DATA:domain}:%{INT:session} reply="%{ACCESSGFTPREPLY}"$
+ACCESSGFTP2 level=%{WORD:level} ts=%{TIMESTAMP_ISO8601:access_time} event=%{DATA:event} host.remote=\/%{IP:IP}\:%{INT:port} session=%{WORD:celltype}\:%{DATA:domain}:%{INT:session}$
+ACCESSGFTP3 level=%{WORD:level} ts=%{TIMESTAMP_ISO8601:access_time} event=%{DATA:event} host.remote=\/%{IP:IP}\:%{INT:port} session=%{WORD:celltype}\:%{DATA:domain}:%{INT:session} command="%{ACCESSGFTPCMD}" reply="%{ACCESSGFTPREPLY}"
+ACCESSGFTP %{ACCESSGFTP1}|%{ACCESSGFTP2}|%{ACCESSGFTP3}
+
+ACCESSSRM1 level=%{WORD:level} ts=%{TIMESTAMP_ISO8601:access_time} event=%{DATA:event} host.remote=(|\/)%{IP:IP}(\:%{INT:port}|) dn="%{DATA:dn}" request.method=%{DATA:request_method} request.token=%{INT:request_token} status.code=%{DATA:status_code} (|status.explanation="%{DATA:status_explanation}")session=%{DATA:session_rate}:%{INT:session_counter}:%{DATA:session_version}:%{WORD:session_method} user-agent=%{DATA:user_agent}$
+ACCESSSRM1RM level=%{WORD:level} ts=%{TIMESTAMP_ISO8601:access_time} event=%{DATA:event} host.remote=(|\/)%{IP:IP}(\:%{INT:port}|) dn="%{DATA:dn}" request.method=%{DATA:request_method} status.code=%{DATA:status_code} (|status.explanation="%{DATA:status_explanation}")session=%{DATA:session_rate}:%{INT:session_counter}:%{DATA:session_version}:%{WORD:session_method} user-agent=%{DATA:user_agent}$
+ACCESSSRM %{ACCESSSRM1}|%{ACCESSSRM1RM}
+
+ACCESSGFTPREPLYENC %{WORD:reply_enc}\{%{INT:reply_code}(|-)%{GREEDYDATA:reply_msg}\}
+ACCESSGFTPCMDENC %{WORD:command_enc}(\{(%{DATA:command_verb} %{GREEDYDATA:command_parameter}\}|%{DATA:command_verb}\}))
+ACCESSGFTPREPLYCLEAR %{INT:reply_code} %{WORD:reply_verb}(|-|=)%{GREEDYDATA:reply_msg}
+ACCESSGFTPCMDCLEAR (%{WORD:command_verb}$|%{WORD:command_verb} %{GREEDYDATA:command_parameter})
+
+ACCESSGFTPREPLY %{ACCESSGFTPREPLYENC}|%{ACCESSGFTPREPLYCLEAR}
+ACCESSGFTPCMD %{ACCESSGFTPCMDENC}|%{ACCESSGFTPCMDCLEAR}
