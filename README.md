@@ -75,6 +75,7 @@ filter {
   date {
     match => [ "billing_time", "MM.dd HH:mm:ss" ]
     timezone => "CET"
+    remove_field => [ "billing_time" ]
   }
 
   alter {
