@@ -69,7 +69,7 @@ filter {
       tag_on_failure => [ "_parse_dcache_failure00" ]
     }
 
-  } End of if else
+  } # End of if else
 
 
   date {
