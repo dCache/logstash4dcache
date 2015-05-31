@@ -99,7 +99,7 @@ output {
 ###Add parser for dCache's billing files
 ```
 # mkdir /etc/logstash/patterns
-# wget -O /etc/logstash/patterns/dcache-billing  https://raw.githubusercontent.com/kofemann/logstash4dcache/master/patterns/dcache-billing
+# wget -O /etc/logstash/patterns/dcache-billing  https://raw.githubusercontent.com/dCache/logstash4dcache/master/patterns/dcache-billing
 ```
 ##On the node which will run as monitoring system
 ```
