@@ -213,14 +213,6 @@ We need to update tamplate for newly crated indexes (databases)
           "@version":{
             "index":"not_analyzed",
             "type":"string"
-          },
-          "pool_name.raw":{
-            "index":"not_analyzed",
-            "type":"string"
-          },
-          "sunit.raw":{
-            "index":"not_analyzed",
-            "type":"string"
           }
         },
         "_all":{
