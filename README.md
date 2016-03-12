@@ -34,6 +34,8 @@ input {
     sincedb_path => "/var/tmp/sincedb-dcache"
     # uncomment next line if you want to import existing data
     # start_position => beginning
+    # uncomment next line to import files with logstash 2.2.x
+    # ignore_older => 0
     type => "dcache-billing"
   }
 }
