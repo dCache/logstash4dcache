@@ -1,3 +1,4 @@
+UNIXPATH (/([\w_%!$@:.,+~-]+|\\.)*)+
 BILLING_TIME %{MONTHNUM}.%{MONTHDAY} %{TIME}
 
 BILL_TYPE (?:transfer|restore|store|request|remove)

@@ -1,1 +1,4 @@
 DCACHE_CELL_LOG %{MONTHDAY} %{MONTH} %{YEAR} %{TIME} \(%{DATA:cell}\) \[%{DATA:ndc}\] %{DATA:log_message}
+MOUTH_DE \b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Mai||Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\b
+
+MNT (MOUNTH|MOUNTH_DE)
